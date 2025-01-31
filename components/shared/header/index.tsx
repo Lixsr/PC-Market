@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { APP_NAME } from "@/lib/constants";
+import ModeToggle from "./modeToggle";
 
 const Header = () => {
   return (
@@ -24,6 +25,7 @@ const Header = () => {
           </Link>
         </div>
         <div className="space-x-2">
+          <ModeToggle />
           {/* asChild allows successor to inherit Button behavior and styles */}
           {/* ghost => Removes the button's background and border and applies subtle hover effect */}
           <Button asChild variant="ghost">
@@ -32,7 +34,7 @@ const Header = () => {
               Cart
             </Link>
           </Button>
-          <Button asChild variant="ghost">
+          <Button asChild>
             <Link href="/sign-in">
               <UserIcon />
               Sign In
