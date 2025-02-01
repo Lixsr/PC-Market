@@ -9,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import ProductPrice from "./ProductPrice";
 
 const ProductCard = ({ product }: { product: any }) => {
   return (
@@ -34,7 +35,7 @@ const ProductCard = ({ product }: { product: any }) => {
             {product.rating} <Star />
           </p>
           {product.stock > 0 ? (
-            <span className="font-bold">${product.price}</span>
+            <ProductPrice value={product.price} />
           ) : (
             <span className="text-destructive">Out of Stock</span>
           )}
