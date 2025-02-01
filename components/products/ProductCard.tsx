@@ -1,14 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Star } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import ProductPrice from "./ProductPrice";
 
 const ProductCard = ({ product }: { product: any }) => {
@@ -19,8 +12,8 @@ const ProductCard = ({ product }: { product: any }) => {
           <Image
             src={product.images[0]}
             alt={product.name}
-            width={300}
-            height={300}
+            width={400}
+            height={400}
             priority={true}
           />
         </Link>
