@@ -67,7 +67,7 @@ const sampleData = {
       brand: "G.Skill",
       rating: 4.6,
       numReviews: 20,
-      stock: 10,
+      stock: 0,
       isFeatured: false,
       banner: null,
     },
