@@ -7,7 +7,7 @@ const ProductPrice = ({
   value: number;
   className?: string;
 }) => {
-  const [dollars, cents] = Number(value).toFixed(2).split(".");
+  const [dollars, cents] = value.toFixed(2).split(".");
 
   return (
     <p className={cn("text-2xl", className)}>

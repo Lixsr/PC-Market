@@ -3,8 +3,9 @@ import Image from "next/image";
 import { Star } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import ProductPrice from "./ProductPrice";
+import { Product } from "@/types";
 
-const ProductCard = ({ product }: { product: any }) => {
+const ProductCard = ({ product }: { product: Product }) => {
   return (
     <Card className="bg-white shadow-md w-full max-w-sm">
       <CardHeader className="p-0 items-center">
@@ -28,7 +29,7 @@ const ProductCard = ({ product }: { product: any }) => {
             {product.rating} <Star />
           </p>
           {product.stock > 0 ? (
-            <ProductPrice value={product.price} />
+            <ProductPrice value={Number(product.price)} />
           ) : (
             <span className="text-destructive">Out of Stock</span>
           )}
