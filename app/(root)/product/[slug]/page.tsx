@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import ProductPrice from "@/components/shared/products/ProductPrice";
 import { Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import ProductImages from "@/components/shared/products/ProductImages";
 
 const ProductDetailsPage = async (props: {
   params: Promise<{ slug: string }>;
@@ -18,7 +19,9 @@ const ProductDetailsPage = async (props: {
   }
   return (
     <main className="grid grid-cols-1 md:grid-cols-5">
-      <section className="col-span-2"></section>
+      <section className="col-span-2">
+        <ProductImages images={product.images} name={product.name} />
+      </section>
 
       <section className="col-span-2 p-4">
         <div className="flex flex-col gap-6">
