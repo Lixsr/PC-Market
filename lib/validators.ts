@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { formatNumberWithDecimal } from "./utils";
 
-// Currency format
+// Decimal format
 const currency = z
   .string()
   .refine(
@@ -34,10 +34,14 @@ export const insertProductSchema = z.object({
   description: z
     .string()
     .min(2, "description must be at lease 3 characters")
-    .max(50, "description must be at most 250 characters"),
-  images: z.array(z.string()).min(1, "Please upload at least one image"),
+    .max(50, "description must be at most 250 characters")
+    .nullable(),
+  images: z
+    .array(z.string())
+    .min(1, "Please upload at least one image")
+    .nullable(),
   isFeatured: z.boolean(),
   // nullable is used to allow null values
-  banner: z.boolean().nullable(),
+  banner: z.string().nullable(),
   price: currency,
 });
