@@ -10,7 +10,11 @@ const currency = z
       message: "Invalid price",
     }
   );
-
+// Define a schema for signing in
+export const signInSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(3, "Password must be at least 8 characters"),
+});
 // Define a schema for inserting products
 export const insertProductSchema = z.object({
   name: z
