@@ -18,12 +18,17 @@ export const metadata: Metadata = {
   description: "Sign in to your account",
 };
 
-const SignInPage = async () => {
+const SignInPage = async (props: {
+  searchParams: Promise<{
+    callbackUrl: string;
+  }>;
+}) => {
+  const { callbackUrl } = await props.searchParams;
   // get the session
   const session = await auth();
   if (session) {
     // redirect to the home page if the user is already signed in
-    redirect("/");
+    return redirect(callbackUrl || "/");
   }
   return (
     <div className="w-full border max-w-md mx-auto">
