@@ -10,13 +10,21 @@ import Link from "next/link";
 import Image from "next/image";
 import { APP_NAME } from "@/lib/constants";
 import SignInForm from "./SignInForm";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Sign In",
   description: "Sign in to your account",
 };
 
-const SignInPage = () => {
+const SignInPage = async () => {
+  // get the session
+  const session = await auth();
+  if (session) {
+    // redirect to the home page if the user is already signed in
+    redirect("/");
+  }
   return (
     <div className="w-full border max-w-md mx-auto">
       <Card>
