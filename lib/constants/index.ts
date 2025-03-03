@@ -9,6 +9,7 @@ export const LATEST_PRODUCTS_LIMIT =
 
 // For testing purposes
 export const defaultCredentials = {
+  name: "",
   email: "",
   password: "",
 };
