@@ -10,7 +10,6 @@ import {
   DropdownMenuContent,
 } from "@/components/ui/dropdown-menu";
 import { auth } from "@/auth";
-import { format } from "path";
 
 const UserButton = async () => {
   const session = await auth();
