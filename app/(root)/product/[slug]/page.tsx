@@ -4,8 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import ProductPrice from "@/components/shared/products/ProductPrice";
 import { Star } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import ProductImages from "@/components/shared/products/ProductImages";
+import AddToCart from "@/components/shared/products/AddToCart";
 
 const ProductDetailsPage = async (props: {
   params: Promise<{ slug: string }>;
@@ -67,7 +67,16 @@ const ProductDetailsPage = async (props: {
             </div>
             {product.stock > 0 && (
               <div className="flex-center">
-                <Button className="w-full">Add To Cart</Button>
+                <AddToCart
+                  item={{
+                    productId: product.id,
+                    slug: product.slug,
+                    name: product.name,
+                    price: product.price,
+                    image: product.images![0],
+                    quantity: 1,
+                  }}
+                />
               </div>
             )}
           </CardContent>

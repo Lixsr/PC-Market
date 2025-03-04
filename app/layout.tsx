@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "@/assets/styles/globals.css";
 import { APP_NAME, APP_DESCRIPTION, APP_URL } from "@/lib/constants";
 import { ThemeProvider } from "next-themes";
-
+import { Toaster } from "@/components/ui/sonner";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -24,8 +24,14 @@ export default function RootLayout({
     // suppressHydrationWarning is used to suppress the warning that appears when using the ThemeProvider component
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} antialiased`}>
-        <ThemeProvider attribute={"class"} defaultTheme="light" enableSystem disableTransitionOnChange>
+        <ThemeProvider
+          attribute={"class"}
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange
+        >
           {children}
+          <Toaster position="bottom-center" closeButton/>
         </ThemeProvider>
       </body>
     </html>
