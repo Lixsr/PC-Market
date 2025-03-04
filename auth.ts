@@ -55,12 +55,31 @@ export const config = {
     async session({ session, user, trigger, token }: any) {
       // Add the user id to the session from the token
       session.user.id = token.sub;
+      session.user.role = token.role;
+      session.user.name = token.name;
+
+      // ToDo: Add Image to the session
+
       // if update
       if (trigger === "update") {
         // Add the user role to the session from the token
         session.user.name = user.name;
       }
       return session;
+    },
+    async jwt({ token, user }: any) {
+      // Assign user details to the token
+      if (user) {
+        token.role = user.role;
+        // if user is anonymous, set the name to the email
+        if (user.name === "Anonymous") token.name = user.email!.split("@")[0];
+        // update DB with the token name
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { name: token.name },
+        });
+      }
+      return token;
     },
   },
 } satisfies NextAuthConfig;
