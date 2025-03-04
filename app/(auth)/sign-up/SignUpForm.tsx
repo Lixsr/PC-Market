@@ -11,7 +11,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
 const SignUpForm = () => {
-  const [state, signIn] = useActionState(signUpWithCredentials, {
+  const [state, signUp] = useActionState(signUpWithCredentials, {
     success: false,
     message: "",
   });
@@ -28,7 +28,7 @@ const SignUpForm = () => {
     );
   };
   return (
-    <form action={signIn}>
+    <form action={signUp}>
       <input type="hidden" name="callbackUrl" value={callbackUrl} />
       <div className="space-y-6">
         <div>
@@ -84,8 +84,8 @@ const SignUpForm = () => {
         )}
         <div className="text-sm text-center text-muted-foreground">
           Already have an account?{" "}
-          <Link href="/sign-up" target="_self" className="link">
-            Sign Up
+          <Link href="/sign-in" target="_self" className="link">
+            Sign In
           </Link>
         </div>
       </div>
