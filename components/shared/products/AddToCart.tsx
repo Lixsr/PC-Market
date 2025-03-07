@@ -12,7 +12,7 @@ const AddToCart = ({ item }: { item: CartItem }) => {
   const handleAddToCart = async () => {
     const response = await addToCart(item);
 
-    if (!response.success) {
+    if (response && !response.success) {
       toast.error(response.message, { duration: 3000, richColors: true });
       return;
     }
