@@ -35,3 +35,12 @@ export async function formatError(err: any) {
       : JSON.stringify(err.message);
   }
 }
+
+// Format number
+export function to2Decimals(num: number | string): number {
+  if (typeof num === "string") {
+    return Math.round((Number(num) + Number.EPSILON) * 100) / 100;
+  } else if (typeof num == "number") {
+    return Math.round((num + Number.EPSILON) * 100) / 100;
+  } else throw new Error("Invalid input");
+}

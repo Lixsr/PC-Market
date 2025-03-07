@@ -2,11 +2,29 @@
 
 import { cookies } from "next/headers";
 import { CartItem } from "@/types";
-import { formatError, toPlainObject } from "../utils";
+import { formatError, to2Decimals, toPlainObject } from "../utils";
 import { auth } from "@/auth";
 import { prisma } from "@/db/prisma";
-import { cartItemSchema } from "../validators";
+import { cartItemSchema, insertCartSchema } from "../validators";
+import { revalidatePath } from "next/cache";
 
+// Price calculation
+function calculatePrice(items: CartItem[]) {
+  const itemsPrice = items.reduce(
+    (acc, item) => acc + to2Decimals(item.price) * item.quantity,
+    0
+  );
+  // convert to 2 decimal places. 10 => 10.00
+  const shippingPrice = to2Decimals(itemsPrice > 100 ? 0 : 10);
+  const taxPrice = to2Decimals(0.15 * itemsPrice);
+  const totalPrice = to2Decimals(itemsPrice + shippingPrice + taxPrice);
+  return {
+    itemsPrice: itemsPrice.toFixed(2),
+    shippingPrice: shippingPrice.toFixed(2),
+    taxPrice: taxPrice.toFixed(2),
+    totalPrice: totalPrice.toFixed(2),
+  };
+}
 export const addToCart = async (item: CartItem) => {
   try {
     const sessionCartId = (await cookies()).get("sessionCartId")?.value;
@@ -26,14 +44,24 @@ export const addToCart = async (item: CartItem) => {
     const product = await prisma.product.findFirst({
       where: { id: requestedItem.productId },
     });
-    // temporary log
-    console.log({
-      sessionCartId: sessionCartId,
-      userId: userId,
-      item: requestedItem,
-      product: product,
-    });
-    return { success: true, message: "Item added to cart" };
+    if (!product) throw new Error("Product not found");
+    // if no cart found, create a new cart
+    if (!cart) {
+      // Create a new cart
+      const newCart = insertCartSchema.parse({
+        userId,
+        sessionCartId,
+        items: [requestedItem],
+        ...calculatePrice([requestedItem]),
+      });
+      // Save the cart to the DB
+      await prisma.cart.create({ data: newCart });
+      // Revalidate, to ensure users see the latest content
+      revalidatePath(`/product/${product.slug}`);
+      return { success: true, message: "Item added to cart" };
+    } else {
+      // Handle the quantity
+    }
   } catch (e) {
     return { success: false, message: formatError(e) };
   }
