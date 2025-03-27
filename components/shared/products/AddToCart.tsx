@@ -13,7 +13,10 @@ const AddToCart = ({ item }: { item: CartItem }) => {
     const response = await addToCart(item);
 
     if (response && !response.success) {
-      toast.error(response.message, { duration: 3000, richColors: true });
+      toast.error(response.message || "Failed to add item to cart", {
+        duration: 3000,
+        richColors: true,
+      });
       return;
     }
 
