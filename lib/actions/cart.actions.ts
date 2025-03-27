@@ -10,9 +10,8 @@ import { revalidatePath } from "next/cache";
 
 // Price calculation
 function calculatePrice(items: CartItem[]) {
-  const itemsPrice = items.reduce(
-    (acc, item) => acc + to2Decimals(item.price) * item.quantity,
-    0
+  const itemsPrice = to2Decimals(
+    items.reduce((acc, item) => acc + Number(item.price) * item.quantity, 0)
   );
   // convert to 2 decimal places. 10 => 10.00
   const shippingPrice = to2Decimals(itemsPrice > 100 ? 0 : 10);
