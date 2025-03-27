@@ -120,7 +120,7 @@ export async function getCart() {
     totalPrice: cart.totalPrice.toString(),
   });
 }
-export const removeItemFromCart = async (productId: string) => {
+export const removeFromCart = async (productId: string) => {
   try {
     const sessionCartId = (await cookies()).get("sessionCartId")?.value;
     // handle missing sessionCartId

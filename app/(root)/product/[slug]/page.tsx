@@ -6,6 +6,7 @@ import ProductPrice from "@/components/shared/products/ProductPrice";
 import { Star } from "lucide-react";
 import ProductImages from "@/components/shared/products/ProductImages";
 import AddToCart from "@/components/shared/products/AddToCart";
+import { getCart } from "@/lib/actions/cart.actions";
 
 const ProductDetailsPage = async (props: {
   params: Promise<{ slug: string }>;
@@ -17,6 +18,7 @@ const ProductDetailsPage = async (props: {
     // send user to not found page
     return notFound();
   }
+  const cart = await getCart();
   return (
     <main className="grid grid-cols-1 md:grid-cols-5">
       <section className="col-span-2">
@@ -68,6 +70,7 @@ const ProductDetailsPage = async (props: {
             {product.stock > 0 && (
               <div className="flex-center">
                 <AddToCart
+                  cart={cart}
                   item={{
                     productId: product.id,
                     slug: product.slug,
