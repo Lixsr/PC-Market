@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { addToCart, removeFromCart } from "@/lib/actions/cart.actions";
 import { useTransition } from "react";
 
-const AddToCart = ({ item, cart }: { item: CartItem; cart?: Cart }) => {
+const QuantityControl = ({ item, cart }: { item: CartItem; cart?: Cart }) => {
   const router = useRouter();
   const [isAddLoading, setIsAddLoading] = useTransition();
   const [isRemoveLoading, setIsRemoveLoading] = useTransition();
@@ -36,7 +36,6 @@ const AddToCart = ({ item, cart }: { item: CartItem; cart?: Cart }) => {
   const handleRemoveFromCart = async () => {
     setIsRemoveLoading(async () => {
       const response = await removeFromCart(item.productId);
-      console.log(response);
       if (response && !response.success) {
         toast.error(response.message || "Failed to remove item from cart", {
           duration: 2000,
@@ -88,4 +87,4 @@ const AddToCart = ({ item, cart }: { item: CartItem; cart?: Cart }) => {
   );
 };
 
-export default AddToCart;
+export default QuantityControl;

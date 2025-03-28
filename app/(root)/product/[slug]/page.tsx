@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import ProductPrice from "@/components/shared/products/ProductPrice";
 import { Star } from "lucide-react";
 import ProductImages from "@/components/shared/products/ProductImages";
-import AddToCart from "@/components/shared/products/AddToCart";
+import AddToCart from "@/components/shared/products/QuantityControl";
 import { getCart } from "@/lib/actions/cart.actions";
 
 const ProductDetailsPage = async (props: {
