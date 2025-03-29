@@ -44,3 +44,20 @@ export function to2Decimals(num: number | string): number {
     return Math.round((num + Number.EPSILON) * 100) / 100;
   } else throw new Error("Invalid input");
 }
+
+// Currency Formatter
+export const currency = new Intl.NumberFormat("en-US", {
+  currency: "USD",
+  style: "currency",
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+
+// Format Currency
+export function formatCurrency(value: number | string | null): string {
+  if (typeof value === "string") {
+    return currency.format(Number(value));
+  } else if (typeof value == "number") {
+    return currency.format(value);
+  } else return "NaN";
+}
