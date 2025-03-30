@@ -1,10 +1,8 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
-import { addToCart, removeFromCart } from "@/lib/actions/cart.actions";
-import { ArrowRight, Loader, Minus, Plus } from "lucide-react";
-import { toast } from "sonner";
-import { Cart, CartItem } from "@/types";
+import { ArrowRight, Loader } from "lucide-react";
+import { Cart } from "@/types";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -14,7 +12,7 @@ import {
   TableCell,
   TableHead,
   TableRow,
-} from "@/components/ui/Table";
+} from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import QuantityControl from "@/components/shared/products/QuantityControl";

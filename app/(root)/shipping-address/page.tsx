@@ -1,7 +1,6 @@
 import { defaultShippingAddress } from "@/lib/constants";
 import { Metadata } from "next";
 import { ShippingAddress } from "@/types";
-import { useTransition } from "react";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { getCart } from "@/lib/actions/cart.actions";
