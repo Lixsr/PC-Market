@@ -107,6 +107,21 @@ export const config = {
       return token;
     },
     authorized({ request, auth }: any) {
+      const protectedPaths = [
+        /\/shipping-address/,
+        /\/payment-method/,
+        /\/place-order/,
+        /\/profile/,
+        /\/user\/(.*)/,
+        /\/order\/(.*)/,
+        /\/admin/,
+      ];
+      const { pathname } = request.nextUrl;
+      // Check if the user is authenticated
+      if (!auth && protectedPaths.some((path) => path.test(pathname))) {
+        return false;
+      }
+
       // check for the sessionCartId cookie
       if (!request.cookies.get("sessionCartId")) {
         // if not found, create a new one
