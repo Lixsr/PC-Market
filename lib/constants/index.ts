@@ -6,6 +6,13 @@ export const delay = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 export const LATEST_PRODUCTS_LIMIT =
   Number(process.env.LATEST_PRODUCTS_LIMIT) || 12;
+  
+export const checkoutSteps = [
+  "Login",
+  "Shipping Address",
+  "Payment Method",
+  "Place Order",
+];
 
 // For testing purposes
 export const defaultCredentials = {
@@ -14,9 +21,9 @@ export const defaultCredentials = {
   password: "",
 };
 export const defaultShippingAddress = {
-  fullName: "Osamah Alnahari",
-  street: "123 King Fahd Road",
-  city: "Riyadh",
-  postalCode: "12345",
-  country: "Saudi Arabia",
+  fullName: "",
+  street: "",
+  city: "",
+  postalCode: "",
+  country: "",
 };

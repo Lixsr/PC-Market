@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import { getCart } from "@/lib/actions/cart.actions";
 import { getUser } from "@/lib/actions/user.actions";
 import ShippingAddressForm from "./ShippingAddressForm";
+import CheckoutSteps from "@/components/shared/CheckoutSteps";
 
 export const metadata: Metadata = {
   title: "Shipping Address",
@@ -23,7 +24,14 @@ const ShippingAddressPage = async () => {
     throw new Error("User not found");
   }
   const user = await getUser(userId);
-  return <ShippingAddressForm address={user.address as ShippingAddress || defaultShippingAddress} />;
+  return (
+    <>
+      <CheckoutSteps currentStep={1} />
+      <ShippingAddressForm
+        address={(user.address as ShippingAddress) || defaultShippingAddress}
+      />
+    </>
+  );
 };
 
 export default ShippingAddressPage;
