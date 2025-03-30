@@ -70,7 +70,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
             <CardContent className="p-4 gap-4">
               <div className="pb-3 text-xl">
                 Subtotal{" "}
-                {cart.items.reduce((acc, item) => acc + item.quantity, 0)}
+                {/* {cart.items.reduce((acc, item) => acc + item.quantity, 0)} */}
                 <span className="font-bold">
                   {formatCurrency(cart.itemsPrice)}
                 </span>
