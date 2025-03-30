@@ -13,3 +13,10 @@ export const defaultCredentials = {
   email: "",
   password: "",
 };
+export const defaultShippingAddress = {
+  fullName: "Osamah Alnahari",
+  street: "123 King Fahd Road",
+  city: "Riyadh",
+  postalCode: "12345",
+  country: "Saudi Arabia",
+};
