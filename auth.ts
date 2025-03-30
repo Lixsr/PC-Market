@@ -70,9 +70,10 @@ export const config = {
       }
       return session;
     },
-    async jwt({ token, user }: any) {
+    async jwt({ token, user, trigger }: any) {
       // Assign user details to the token
       if (user) {
+        token.id = user.id;
         token.role = user.role;
         // if user is anonymous, set the name to the email
         if (user.name === "Anonymous") token.name = user.email!.split("@")[0];
@@ -81,6 +82,27 @@ export const config = {
           where: { id: user.id },
           data: { name: token.name },
         });
+        if (trigger === "signUp" || trigger === "signIn") {
+          const cookiesOjb = await cookies();
+          const sessionCartId = cookiesOjb.get("sessionCartId")?.value;
+
+          if (sessionCartId) {
+            const sessionCart = await prisma.cart.findFirst({
+              where: { sessionCartId },
+            });
+            if (sessionCart) {
+              // update the cart with the user id
+              await prisma.cart.deleteMany({
+                where: { userId: user.id },
+              });
+
+              await prisma.cart.update({
+                where: { id: sessionCart.id },
+                data: { userId: user.id },
+              });
+            }
+          }
+        }
       }
       return token;
     },
