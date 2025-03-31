@@ -8,7 +8,6 @@ import { getUser } from "./user.actions";
 import { insertOrderSchema } from "../validators";
 import { prisma } from "@/db/prisma";
 import { CartItem } from "@/types";
-import { redirect } from "next/dist/server/api-utils";
 
 export async function placeOrder() {
   try {

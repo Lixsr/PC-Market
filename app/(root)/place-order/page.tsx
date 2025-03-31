@@ -18,6 +18,7 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import { formatCurrency } from "@/lib/utils";
+import PlaceOrderForm from "./PlaceOrderForm";
 
 export const metadata: Metadata = {
   title: "Place Order",
@@ -126,6 +127,7 @@ const placeOrderPage = async () => {
               <p>Total</p>
               <div>{formatCurrency(cart.totalPrice)}</div>
             </div>
+            <PlaceOrderForm />
           </CardContent>
         </Card>
       </div>
