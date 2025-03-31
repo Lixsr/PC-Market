@@ -5,7 +5,7 @@ import { useTransition } from "react";
 import { paymentMethodSchema } from "@/lib/validators";
 import { DEFAULT_PAYMENT_METHOD, PAYMENT_METHODS } from "@/lib/constants";
 import { z } from "zod";
-import { ControllerRenderProps, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
