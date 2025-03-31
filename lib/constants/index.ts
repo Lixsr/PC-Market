@@ -6,7 +6,7 @@ export const delay = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 export const LATEST_PRODUCTS_LIMIT =
   Number(process.env.LATEST_PRODUCTS_LIMIT) || 12;
-  
+
 export const checkoutSteps = [
   "Login",
   "Shipping Address",
@@ -27,3 +27,9 @@ export const defaultShippingAddress = {
   postalCode: "",
   country: "",
 };
+export const PAYMENT_METHODS = process.env.PAYMENT_METHODS
+  ? process.env.PAYMENT_METHODS.split(", ")
+  : ["PayPal", "Stripe", "CashOnDelivery"];
+export const DEFAULT_PAYMENT_METHOD = process.env.DEFAULT_PAYMENT_METHOD
+  ? process.env.DEFAULT_PAYMENT_METHOD
+  : "PayPal";

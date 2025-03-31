@@ -5,9 +5,14 @@ import { CartItem } from "@/types";
 import { formatError, to2Decimals, toPlainObject } from "../utils";
 import { auth } from "@/auth";
 import { prisma } from "@/db/prisma";
-import { cartItemSchema, insertCartSchema } from "../validators";
+import {
+  cartItemSchema,
+  insertCartSchema,
+  paymentMethodSchema,
+} from "../validators";
 import { revalidatePath } from "next/cache";
 import { Prisma } from "@prisma/client";
+import { z } from "zod";
 
 // Price calculation
 function calculatePrice(items: CartItem[]) {
@@ -161,6 +166,30 @@ export const removeFromCart = async (productId: string) => {
 
     revalidatePath(`/product/${product.slug}`);
     return { success: true, message: `${product.name} removed from cart` };
+  } catch (e) {
+    return { success: false, message: formatError(e) };
+  }
+};
+
+// update payment method
+export const updatePaymentMethod = async (
+  paymentMethod: z.infer<typeof paymentMethodSchema>
+) => {
+  try {
+    const session = await auth();
+    const user = await prisma.user.findFirst({
+      where: { id: session?.user?.id },
+    });
+    if (!user) throw new Error("User not found");
+    const paymentMethod = paymentMethodSchema.parse(paymentMethodSchema);
+
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        paymentMethod: paymentMethod.paymentMethod,
+      },
+    });
+    return { success: true, message: "Payment method updated" };
   } catch (e) {
     return { success: false, message: formatError(e) };
   }
