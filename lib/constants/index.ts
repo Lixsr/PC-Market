@@ -16,9 +16,10 @@ export const checkoutSteps = [
 
 // For testing purposes
 export const defaultCredentials = {
-  name: "",
-  email: "",
-  password: "",
+  // dummy data
+  name: "fake",
+  email: "fake@gmail.com",
+  password: "!!22QQww",
 };
 export const defaultShippingAddress = {
   fullName: "",
