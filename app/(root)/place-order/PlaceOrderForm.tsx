@@ -12,7 +12,7 @@ const PlaceOrderForm = () => {
     e.preventDefault();
     const response = await placeOrder();
     if (response) {
-      router.push(`/order/${response.redirectTo}`);
+      router.push(`${response.redirectTo}`);
     }
   };
   const PlaceOrderButton = () => {
