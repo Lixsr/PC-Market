@@ -173,7 +173,7 @@ export const removeFromCart = async (productId: string) => {
 
 // update payment method
 export const updatePaymentMethod = async (
-  paymentMethod: z.infer<typeof paymentMethodSchema>
+  data: z.infer<typeof paymentMethodSchema>
 ) => {
   try {
     const session = await auth();
@@ -181,7 +181,7 @@ export const updatePaymentMethod = async (
       where: { id: session?.user?.id },
     });
     if (!user) throw new Error("User not found");
-    const paymentMethod = paymentMethodSchema.parse(paymentMethodSchema);
+    const paymentMethod = paymentMethodSchema.parse(data);
 
     await prisma.user.update({
       where: { id: user.id },
