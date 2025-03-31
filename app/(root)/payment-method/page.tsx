@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { auth } from "@/auth";
 import { getUser } from "@/lib/actions/user.actions";
 import PaymentMethodForm from "./PaymentMethodForm";
+import CheckoutSteps from "@/components/shared/CheckoutSteps";
 
 export const metadata: Metadata = {
   title: "Payment Method",
@@ -19,6 +20,7 @@ const PaymentMethodPage = async () => {
 
   return (
     <>
+      <CheckoutSteps currentStep={2} />
       <PaymentMethodForm preferredPaymentMethod={user.paymentMethod} />
     </>
   );
