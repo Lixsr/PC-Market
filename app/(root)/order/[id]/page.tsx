@@ -1,7 +1,6 @@
 import { getOrder } from "@/lib/actions/order.actions";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ShippingAddress } from "@/types";
 
 export const metadata: Metadata = {
   title: "Order Details",
