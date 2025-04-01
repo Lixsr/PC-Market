@@ -59,7 +59,7 @@ const OrderDetailsTable = ({
   const handleCreatePaypalOrder = async () => {
     const response = await createPaypalOrder(id);
     if (!response.success) {
-      toast.error(response.message);
+      toast.error(response.message, { richColors: true });
     }
     return response.paypalOrderId;
   };
@@ -68,9 +68,9 @@ const OrderDetailsTable = ({
   const handleApprovePaypalOrder = async (data: { orderID: string }) => {
     const order = await approvePaypalOrder(id, data);
     if (order.success) {
-      toast.success(order.message);
+      toast.success(order.message, { richColors: true });
     } else {
-      toast.error(order.message);
+      toast.error(order.message, { richColors: true });
     }
   };
 
