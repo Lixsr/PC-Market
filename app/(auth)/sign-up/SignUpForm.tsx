@@ -72,7 +72,7 @@ const SignUpForm = () => {
             name="confirmPassword"
             required
             autoComplete="confirmPassword"
-            defaultValue={defaultCredentials.email}
+            defaultValue={defaultCredentials.password}
           />
         </div>
         <div>
