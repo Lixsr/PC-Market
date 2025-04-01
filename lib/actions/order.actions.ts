@@ -131,7 +131,12 @@ export async function createPaypalOrder(orderId: string) {
 }
 
 // Approve paypal order
-export async function approvePaypalOrder(orderId: string) {
+export async function approvePaypalOrder(
+  // orderId for the order in the database
+  // data.orderID for the paypal order
+  orderId: string,
+  data: { orderID: string }
+) {
   try {
     const order = await prisma.order.findFirst({
       where: { id: orderId },
@@ -140,7 +145,7 @@ export async function approvePaypalOrder(orderId: string) {
     if (!order) throw new Error("Order not found");
     if (order.isPaid) throw new Error("Order is already paid");
 
-    const captureData = await paypal.capturePayment(orderId);
+    const captureData = await paypal.capturePayment(data.orderID);
     if (
       !captureData ||
       captureData.id !== (order.paymentResult as PaymentResult)?.id ||
@@ -178,7 +183,7 @@ export async function approvePaypalOrder(orderId: string) {
     revalidatePath(`/order/${orderId}`);
     return {
       success: true,
-      message: "Successful payment",
+      message: "Payment processed successfully. Your order is confirmed.",
     };
   } catch (error) {
     return { success: false, message: formatError(error) };
