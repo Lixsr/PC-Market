@@ -7,8 +7,9 @@ import { getCart } from "./cart.actions";
 import { getUser } from "./user.actions";
 import { insertOrderSchema } from "../validators";
 import { prisma } from "@/db/prisma";
-import { CartItem } from "@/types";
+import { CartItem, PaymentResult } from "@/types";
 import { paypal } from "../paypal";
+import { revalidatePath } from "next/cache";
 
 export async function placeOrder() {
   try {
@@ -123,6 +124,61 @@ export async function createPaypalOrder(orderId: string) {
       success: true,
       message: "Order created successfully",
       paypalOrderId: paypalOrder.id,
+    };
+  } catch (error) {
+    return { success: false, message: formatError(error) };
+  }
+}
+
+// Approve paypal order
+export async function approvePaypalOrder(orderId: string) {
+  try {
+    const order = await prisma.order.findFirst({
+      where: { id: orderId },
+      include: { orderItems: true },
+    });
+    if (!order) throw new Error("Order not found");
+    if (order.isPaid) throw new Error("Order is already paid");
+
+    const captureData = await paypal.capturePayment(orderId);
+    if (
+      !captureData ||
+      captureData.id !== (order.paymentResult as PaymentResult)?.id ||
+      captureData.status !== "COMPLETED"
+    ) {
+      throw new Error("PayPal payment failed!");
+    }
+
+    // Update order to paid
+    await prisma.$transaction(async (tx) => {
+      // Update stock
+      for (const item of order.orderItems) {
+        await tx.product.update({
+          where: { id: item.productId },
+          data: { stock: { decrement: item.quantity } },
+        });
+      }
+      // Update order to paid
+      await tx.order.update({
+        where: { id: orderId },
+        data: {
+          isPaid: true,
+          paidAt: new Date(),
+          paymentResult: {
+            id: captureData.id,
+            email_address: captureData.payer.email_address,
+            status: captureData.status,
+            pricePaid:
+              captureData.purchase_units[0]?.payments?.captures[0]?.amount
+                ?.value,
+          },
+        },
+      });
+    });
+    revalidatePath(`/order/${orderId}`);
+    return {
+      success: true,
+      message: "Successful payment",
     };
   } catch (error) {
     return { success: false, message: formatError(error) };
