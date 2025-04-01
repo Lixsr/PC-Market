@@ -57,7 +57,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                       <QuantityControl item={item} cart={cart} />
                     </TableCell>
                     <TableCell className="text-right">
-                      {Number(item.price) * item.quantity}
+                      {cart.itemsPrice}
                     </TableCell>
                   </TableRow>
                 ))}

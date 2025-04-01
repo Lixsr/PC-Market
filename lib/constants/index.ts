@@ -14,12 +14,10 @@ export const checkoutSteps = [
   "Place Order",
 ];
 
-// For testing purposes
 export const defaultCredentials = {
-  // dummy data
-  name: "fake",
-  email: "fake@gmail.com",
-  password: "!!22QQww",
+  name: "",
+  email: "",
+  password: "",
 };
 export const defaultShippingAddress = {
   fullName: "",
