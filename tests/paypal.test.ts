@@ -6,5 +6,4 @@ test("Generate paypal token", async () => {
   expect (typeof token).toBe("string");
   expect(token.length).toBeGreaterThan(0);
   expect(token).toBeDefined();
-  console.log(token);
 });
