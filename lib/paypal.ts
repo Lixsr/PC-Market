@@ -22,3 +22,4 @@ async function generatePaypalToken() {
     return access_token;
   } else throw new Error(await response.text());
 }
+export { generatePaypalToken };
