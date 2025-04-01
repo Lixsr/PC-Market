@@ -104,26 +104,28 @@ const OrderDetailsTable = ({ order }: { order: Order }) => {
             </CardContent>
           </Card>
         </div>
-        <Card>
-          <CardContent className="p-4 gap-4 space-y-4">
-            <div className="flex justify-between">
-              <p>Items</p>
-              <div>{formatCurrency(itemsPrice)}</div>
-            </div>
-            <div className="flex justify-between">
-              <p>Tax</p>
-              <div>{formatCurrency(taxPrice)}</div>
-            </div>
-            <div className="flex justify-between">
-              <p>Shipping</p>
-              <div>{formatCurrency(shippingPrice)}</div>
-            </div>
-            <div className="flex justify-between">
-              <p>Total</p>
-              <div>{formatCurrency(totalPrice)}</div>
-            </div>
-          </CardContent>
-        </Card>
+        <div>
+          <Card>
+            <CardContent className="p-4 gap-4 space-y-4">
+              <div className="flex justify-between">
+                <p>Items</p>
+                <div>{formatCurrency(itemsPrice)}</div>
+              </div>
+              <div className="flex justify-between">
+                <p>Tax</p>
+                <div>{formatCurrency(taxPrice)}</div>
+              </div>
+              <div className="flex justify-between">
+                <p>Shipping</p>
+                <div>{formatCurrency(shippingPrice)}</div>
+              </div>
+              <div className="flex justify-between">
+                <p>Total</p>
+                <div>{formatCurrency(totalPrice)}</div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </>
   );
