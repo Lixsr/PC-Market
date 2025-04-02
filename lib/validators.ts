@@ -135,9 +135,9 @@ export const paymentResultSchema = z.object({
 });
 
 export const updateProfileSchema = z.object({
-  name: z.string().min(2, "Name must be at lease 2 characters"),
+  name: z.string().min(2, "Name must be at least 2 characters"),
   email: z
     .string()
     .email("Invalid email address")
-    .min(2, "Email must be at lease 2 characters"),
+    .min(2, "Email must be at least 2 characters"),
 });

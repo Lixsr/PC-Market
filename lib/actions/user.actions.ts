@@ -64,9 +64,7 @@ export async function updateUserProfile({
       throw new Error("User not found");
     }
     if (user.email !== email) {
-      throw new Error(
-        "You are not allowed to change your email address currently"
-      );
+      throw new Error("Email address updates are not allowed at the moment.");
     }
     await prisma.user.update({
       where: { id: user.id },
