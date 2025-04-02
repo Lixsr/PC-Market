@@ -47,6 +47,29 @@ export async function updateAddress(newAddress: ShippingAddress) {
   }
 }
 
+// Update User Profile
+export async function updateUserProfile({name}: { name: string }) {
+  try {
+    const session = await auth();
+    const user = await prisma.user.findFirst({
+      where: { id: session?.user?.id },
+    });
+    if (!user) {
+      throw new Error("User not found");
+    }
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        name,
+      },
+    });
+    return { success: true, message: "User profile updated successfully" };
+  } catch (error) {
+    return { success: false, message: formatError(error) };
+  }
+
+}
+
 // Sign in
 export async function signInWithCredentials(
   prevState: unknown,
