@@ -48,7 +48,13 @@ export async function updateAddress(newAddress: ShippingAddress) {
 }
 
 // Update User Profile
-export async function updateUserProfile({name}: { name: string }) {
+export async function updateUserProfile({
+  name,
+  email,
+}: {
+  name: string;
+  email: string;
+}) {
   try {
     const session = await auth();
     const user = await prisma.user.findFirst({
@@ -56,6 +62,11 @@ export async function updateUserProfile({name}: { name: string }) {
     });
     if (!user) {
       throw new Error("User not found");
+    }
+    if (user.email !== email) {
+      throw new Error(
+        "You are not allowed to change your email address currently"
+      );
     }
     await prisma.user.update({
       where: { id: user.id },
@@ -67,7 +78,6 @@ export async function updateUserProfile({name}: { name: string }) {
   } catch (error) {
     return { success: false, message: formatError(error) };
   }
-
 }
 
 // Sign in
