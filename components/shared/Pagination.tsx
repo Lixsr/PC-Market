@@ -26,7 +26,7 @@ const Pagination = ({
   };
 
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-2 justify-center space-x-4">
       <Button
         size="lg"
         variant="outline"
@@ -36,6 +36,9 @@ const Pagination = ({
       >
         Previous
       </Button>
+      <div className="flex items-center justify-center ">
+        {page} of {totalPages}
+      </div>
       <Button
         size="lg"
         variant="outline"
