@@ -10,6 +10,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Link from "next/link";
+import Pagination from "@/components/shared/Pagination";
+import { PAGE_SIZE } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Orders",
@@ -18,9 +20,9 @@ const OrdersPage = async (props: {
   searchParams: Promise<{ page: string }>;
 }) => {
   const { page } = await props.searchParams;
-  const { orders } = await getOrders({
+  const { orders, totalPages } = await getOrders({
     page: Number(page) || 1,
-    limit: 10,
+    limit: PAGE_SIZE || 10,
   });
 
   return (
@@ -72,6 +74,7 @@ const OrdersPage = async (props: {
             ))}
           </TableBody>
         </Table>
+        {orders.length > 0 && (<Pagination page={Number(page) || 1} totalPages={totalPages}/>)}
       </div>
     </div>
   );
