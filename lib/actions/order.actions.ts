@@ -7,6 +7,7 @@ import { getCart } from "./cart.actions";
 import { getUser } from "./user.actions";
 import { insertOrderSchema } from "../validators";
 import { prisma } from "@/db/prisma";
+import { Prisma } from "@prisma/client";
 import { CartItem, PaymentResult } from "@/types";
 import { paypal } from "../paypal";
 import { revalidatePath } from "next/cache";
@@ -213,5 +214,49 @@ export async function getOrders({
   return {
     orders: orders,
     totalPages,
+  };
+}
+
+type Sales = {
+  month: string;
+  totalSales: number;
+}[];
+
+// Get order summary
+export async function getOrderSummary() {
+  const totalOrders = await prisma.order.count();
+  const totalProducts = await prisma.product.count();
+  const totalUsers = await prisma.user.count();
+
+  const totalSales = await prisma.order.aggregate({
+    _sum: { totalPrice: true },
+  });
+
+  const rawSales = await prisma.$queryRaw<
+    Array<{ month: string; totalSales: Prisma.Decimal }>
+  >`
+    SELECT to_char("createdAt", 'MM/YY') as "month", sum("totalPrice") as "totalSales"
+    FROM "Order" GROUP BY to_char("createdAt", 'MM/YY')
+    `;
+  const sales: Sales = rawSales.map((sale) => ({
+    month: sale.month,
+    totalSales: Number(sale.totalSales),
+  }));
+
+  const latestSales = await prisma.order.findMany({
+    orderBy: { createdAt: "desc" },
+    take: 6,
+    include: {
+      user: { select: { name: true } },
+    },
+  });
+
+  return {
+    totalOrders,
+    totalProducts,
+    totalUsers,
+    totalSales,
+    sales,
+    latestSales,
   };
 }
