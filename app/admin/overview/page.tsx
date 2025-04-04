@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getOrderSummary } from "@/lib/actions/order.actions";
 import { formatCurrency, formatDateTime, formatNumber } from "@/lib/utils";
 import { DollarSign, Barcode, CreditCard, Users } from "lucide-react";
+import { Charts } from "./Charts";
 
 import {
   Table,
@@ -80,9 +81,11 @@ const AdminOverviewPage = async () => {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
         <Card className="col-span-4">
           <CardHeader>
-            <CardTitle>Overview</CardTitle>
+            <CardTitle>Monthly Sales</CardTitle>
           </CardHeader>
-          <CardContent>{/* ToDO */}</CardContent>
+          <CardContent>
+            <Charts data={{ sales: summary.sales }} />
+          </CardContent>
         </Card>
         <Card className="col-span-3">
           <CardHeader>
