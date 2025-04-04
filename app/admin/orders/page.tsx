@@ -69,7 +69,7 @@ const AdminOrdersPage = async (props: {
                   <Button asChild variant="outline" size={"sm"}>
                     <Link
                       href={`/order/${order.id}`}
-                      className="text-blue-500 hover:underline"
+                      className="text-blue-500 ml-2 hover:underline"
                     >
                       View
                     </Link>
