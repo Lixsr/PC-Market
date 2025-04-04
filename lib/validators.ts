@@ -64,6 +64,12 @@ export const insertProductSchema = z.object({
   banner: z.string().nullable(),
   price: currency,
 });
+
+// Update product schema
+export const updateProductSchema = insertProductSchema.extend({
+  _id: z.string().min(1, "Product id is required"),
+});
+
 // Define a cartItem schema
 export const cartItemSchema = z.object({
   productId: z.string().min(1, "Product is required"),
