@@ -13,8 +13,11 @@ import {
 import { formatCurrency, formatDateTime, formatId } from "@/lib/utils";
 import { Order } from "@/types";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { toast } from "sonner";
+import { useTransition } from "react";
+
 import {
   PayPalButtons,
   PayPalScriptProvider,
@@ -23,12 +26,17 @@ import {
 import {
   createPaypalOrder,
   approvePaypalOrder,
+  updateOrderToPaidCOD,
+  updateOrderToDelivered,
 } from "@/lib/actions/order.actions";
+import { Loader } from "lucide-react";
 
 const OrderDetailsTable = ({
+  isAdmin,
   order,
   paypalClientId,
 }: {
+  isAdmin: boolean;
   order: Order;
   paypalClientId: string;
 }) => {
@@ -74,13 +82,72 @@ const OrderDetailsTable = ({
     }
   };
 
+  function MarkAsPaidButton() {
+    const [isLoading, startTransition] = useTransition();
+    return (
+      <Button
+        type="button"
+        className="w-full"
+        disabled={isLoading}
+        onClick={() => {
+          startTransition(async () => {
+            const response = await updateOrderToPaidCOD(id);
+            if (response.success) {
+              toast.success(response.message, { richColors: true });
+            } else {
+              toast.error(response.message, { richColors: true });
+            }
+          });
+        }}
+      >
+        {isLoading ? (
+          <div className="flex items-center ">
+            <Loader className="animate-spin" />
+            <span className="ml-4">Processing...</span>
+          </div>
+        ) : (
+          "Mark As Paid"
+        )}
+      </Button>
+    );
+  }
+  function MarkAsDeliveredButton() {
+    const [isLoading, startTransition] = useTransition();
+    return (
+      <Button
+        type="button"
+        className="w-full"
+        disabled={isLoading}
+        onClick={() => {
+          startTransition(async () => {
+            const response = await updateOrderToDelivered(id);
+            if (response.success) {
+              toast.success(response.message, { richColors: true });
+            } else {
+              toast.error(response.message, { richColors: true });
+            }
+          });
+        }}
+      >
+        {isLoading ? (
+          <div className="flex items-center ">
+            <Loader className="animate-spin" />
+            <span className="ml-4">Processing...</span>
+          </div>
+        ) : (
+          "Mark As Delivered"
+        )}
+      </Button>
+    );
+  }
+
   return (
     <>
       <h1 className="py-4 text-2xl">Order {formatId(id)}</h1>
       <div className="grid md:grid-cols-3 md:gap-5">
         <div className="col-span-2 space-4-y overflow-x-auto">
           <Card>
-            <CardContent className="p-4 gap-4">
+            <CardContent className="p-4">
               <h2 className="text-xl pb-4">Payment Method</h2>
               <div className="mb-2">{paymentMethod}</div>
               {isPaid ? (
@@ -95,8 +162,8 @@ const OrderDetailsTable = ({
           <Card className="my-2">
             <CardContent className="p-4 gap-4">
               <h2 className="text-xl pb-4">Shipping Address</h2>
-              <div className="mb-2">{shippingAddress.fullName}</div>
-              <div>
+              <div>{shippingAddress.fullName}</div>
+              <div className="mb-2">
                 {shippingAddress.street}, {shippingAddress.city}{" "}
                 {shippingAddress.postalCode}, {shippingAddress.country}
               </div>
@@ -181,6 +248,11 @@ const OrderDetailsTable = ({
                   </PayPalScriptProvider>
                 </div>
               )}
+              {/* COD Payment */}
+              {isAdmin && !isPaid && paymentMethod === "CashOnDelivery" && (
+                <MarkAsPaidButton />
+              )}
+              {isAdmin && isPaid && !isDelivered && <MarkAsDeliveredButton />}
             </CardContent>
           </Card>
         </div>

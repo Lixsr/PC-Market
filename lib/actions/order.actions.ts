@@ -299,7 +299,7 @@ export async function deleteOrder(orderId: string) {
 }
 
 // Update order to delivered
-export async function deliverOrder(orderId: string) {
+export async function updateOrderToDelivered(orderId: string) {
   try {
     const order = await prisma.order.findFirst({
       where: {
