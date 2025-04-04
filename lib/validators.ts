@@ -66,7 +66,7 @@ export const insertProductSchema = z.object({
 
 // Update product schema
 export const updateProductSchema = insertProductSchema.extend({
-  _id: z.string().min(1, "Product id is required"),
+  id: z.string().min(1, "Product id is required"),
 });
 
 // Define a cartItem schema

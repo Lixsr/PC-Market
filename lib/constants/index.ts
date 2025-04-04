@@ -19,6 +19,20 @@ export const defaultCredentials = {
   email: "",
   password: "",
 };
+export const defaultProduct = {
+  name: "",
+  slug: "",
+  description: "",
+  brand: "",
+  category: "",
+  images: [],
+  stock: 0,
+  price: 0,
+  rating: 0,
+  numReviews: 0,
+  isFeatured: false,
+  banner: null,
+};
 export const defaultShippingAddress = {
   fullName: "",
   street: "",
