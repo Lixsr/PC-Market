@@ -20,9 +20,10 @@ export const getProduct = async (slug: string) => {
 
 // Get All Products
 export async function getAllProducts({
+  query,
   limit = PAGE_SIZE,
   page,
-
+  category,
 }: {
   query: string;
   limit?: number;
