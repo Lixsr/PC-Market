@@ -1,9 +1,10 @@
 import { Metadata } from "next";
 import { requireAdmin } from "@/lib/auth-guard";
 import Link from "next/link";
-import { getAllProducts } from "@/lib/actions/product.actions";
+import { getAllProducts, deleteProduct } from "@/lib/actions/product.actions";
 import { formatCurrency, formatId } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import DeleteDialog from "@/components/shared/DeleteDialog";
 import {
   Table,
   TableBody,
@@ -71,6 +72,7 @@ const AdminProductsPage = async (props: {
                   <Button asChild variant="outline" size="sm">
                     <Link href={`/admin/products/${product.id}`}>Edit</Link>
                   </Button>
+                  <DeleteDialog id={product.id} action={deleteProduct}/>
                 </TableCell>
               </TableRow>
             ))}
