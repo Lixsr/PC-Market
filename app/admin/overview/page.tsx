@@ -5,7 +5,7 @@ import { getOrderSummary } from "@/lib/actions/order.actions";
 import { formatCurrency, formatDateTime, formatNumber } from "@/lib/utils";
 import { DollarSign, Barcode, CreditCard, Users } from "lucide-react";
 import { Charts } from "./Charts";
-
+import { requireAdmin } from "@/lib/auth-guard";
 import {
   Table,
   TableBody,
@@ -21,8 +21,8 @@ export const metadata: Metadata = {
 };
 
 const AdminOverviewPage = async () => {
+  await requireAdmin();
   const session = await auth();
-
   if (session?.user.role !== "admin")
     throw new Error("User is not permitted to view this page");
 
