@@ -54,6 +54,12 @@ export const currency = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 2,
 });
 
+// Format number
+const NUMBER_FORMATTER = new Intl.NumberFormat("en-US");
+export function formatNumber(number: number) {
+  return NUMBER_FORMATTER.format(number);
+}
+
 // Format Currency
 export function formatCurrency(value: number | string | null): string {
   if (typeof value === "string") {
