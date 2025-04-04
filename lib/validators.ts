@@ -57,8 +57,7 @@ export const insertProductSchema = z.object({
     .nullable(),
   images: z
     .array(z.string())
-    .min(1, "Please upload at least one image")
-    .nullable(),
+    .min(1, "Please upload at least one image"),
   isFeatured: z.boolean(),
   // nullable is used to allow null values
   banner: z.string().nullable(),
