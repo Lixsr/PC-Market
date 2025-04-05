@@ -2,8 +2,9 @@
 
 // import { useRouter } from "next/navigation";
 import slugify from "slugify";
-import { ControllerRenderProps, useForm } from "react-hook-form";
+import { ControllerRenderProps, SubmitHandler, useForm } from "react-hook-form";
 import { insertProductSchema, updateProductSchema } from "@/lib/validators";
+import { toast } from "sonner";
 import { z } from "zod";
 import { Product } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,17 +20,19 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { createProduct, updateProduct } from "@/lib/actions/product.actions";
+import { useRouter } from "next/navigation";
 
 const ProductForm = ({
   type,
   product,
-//   productId,
+  productId,
 }: {
   type: "create" | "update";
   product?: Product;
   productId?: string;
 }) => {
-//   const router = useRouter();
+  const router = useRouter();
   const form = useForm<z.infer<typeof insertProductSchema>>({
     resolver: zodResolver(
       type === "create" ? insertProductSchema : updateProductSchema
@@ -39,9 +42,37 @@ const ProductForm = ({
         ? defaultProduct
         : { ...defaultProduct, ...product },
   });
+  const handleSubmit: SubmitHandler<
+    z.infer<typeof insertProductSchema>
+  > = async (values) => {
+    // create
+    if (type === "create") {
+      const response = await createProduct(values);
+      if (!response.success) {
+        toast.error(response.message, { richColors: true });
+      } else toast.success(response.message, { richColors: true });
+      router.push("/admin/products");
+
+      // update
+    } else if (type === "update") {
+      if (!productId) {
+        router.push("/admin/products");
+        return;
+      }
+      const response = await updateProduct({ ...values, id: productId });
+      if (!response.success) {
+        toast.error(response.message, { richColors: true });
+      } else toast.success(response.message, { richColors: true });
+    }
+    router.push("/admin/products");
+  };
   return (
     <Form {...form}>
-      <form className="space-y-8">
+      <form
+        className="space-y-8"
+        method="POST"
+        onSubmit={form.handleSubmit(handleSubmit)}
+      >
         <div className="flex flex-col gap-5 md:flex-row">
           <FormField
             control={form.control}
@@ -191,7 +222,7 @@ const ProductForm = ({
         <div className="upload-field flex flex-col gap-5 md:flex-row">
           {/* Images: ToDo */}
         </div>
-        <div className="upload-field">{/* Is Featured */}</div>
+        <div className="upload-field">{/* Is Featured: ToDo */}</div>
         <div>
           <FormField
             control={form.control}
