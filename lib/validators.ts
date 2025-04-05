@@ -55,9 +55,9 @@ export const insertProductSchema = z.object({
     .min(2, "description must be at lease 3 characters")
     .max(250, "description must be at most 250 characters")
     .nullable(),
-  // images: z
-  //   .array(z.string())
-  //   .min(1, "Please upload at least one image"),
+  images: z
+    .array(z.string())
+    .min(1, "Please upload at least one image"),
   // isFeatured: z.boolean(),
   // // nullable is used to allow null values
   // banner: z.string().nullable(),
