@@ -20,6 +20,15 @@ export const getProduct = async (slug: string) => {
     where: { slug },
   });
 };
+// Get Product
+export const getProductById = async (id: string) => {
+  const product = await prisma.product.findFirst({
+    where: { id },
+  });
+  if (!product) throw new Error("Product not found");
+  return toPlainObject(product);
+
+};
 
 // Get All Products
 export async function getAllProducts({
