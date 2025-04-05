@@ -58,9 +58,9 @@ export const insertProductSchema = z.object({
   images: z
     .array(z.string())
     .min(1, "Please upload at least one image"),
-  // isFeatured: z.boolean(),
-  // // nullable is used to allow null values
-  // banner: z.string().nullable(),
+  isFeatured: z.boolean(),
+  // nullable is used to allow null values
+  banner: z.string().nullable(),
   price: currency,
 });
 
