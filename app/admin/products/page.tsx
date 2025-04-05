@@ -72,15 +72,13 @@ const AdminProductsPage = async (props: {
                   <Button asChild variant="outline" size="sm">
                     <Link href={`/admin/products/${product.id}`}>Edit</Link>
                   </Button>
-                  <DeleteDialog id={product.id} action={deleteProduct}/>
+                  <DeleteDialog id={product.id} action={deleteProduct} />
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
-        {totalPages && totalPages > 1 && (
-          <Pagination page={page} totalPages={totalPages} />
-        )}
+        {totalPages > 1 && <Pagination page={page} totalPages={totalPages} />}
       </div>
     </div>
   );
