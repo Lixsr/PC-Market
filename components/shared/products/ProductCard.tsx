@@ -12,7 +12,7 @@ const ProductCard = ({ product }: { product: Product }) => {
         <Link href={`/product/${product.slug}`}>
           <Image
             src={
-              product.images === null
+              product.images === null || product.images.length === 0
                 ? "/assets/no-image.jpg"
                 : product.images[0]
             }
