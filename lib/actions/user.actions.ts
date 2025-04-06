@@ -83,13 +83,21 @@ export async function updateUserProfile({
 
 // Get all users
 export async function getAllUsers({
+  query,
   limit = PAGE_SIZE,
   page,
 }: {
+  query: string;
   limit?: number;
   page: number;
 }) {
   const users = await prisma.user.findMany({
+    where: {
+      name: {
+        contains: query,
+        mode: "insensitive",
+      },
+    },
     orderBy: { createdAt: "desc" },
     take: limit,
     skip: (page - 1) * limit,
