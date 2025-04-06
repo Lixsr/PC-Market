@@ -29,11 +29,11 @@ const AdminProductsPage = async (props: {
   await requireAdmin();
   const searchParams = await props.searchParams;
   const page = Number(searchParams.page) || 1;
-  const searchText = searchParams.query || "";
+  const query = searchParams.query || "";
   const category = searchParams.category || "";
 
   const { products, totalPages } = await getAllProducts({
-    query: searchText,
+    query,
     page,
     category,
     limit: 10,
@@ -43,9 +43,9 @@ const AdminProductsPage = async (props: {
       <div className="flex-between">
         <div className="flex items-center gap-3">
           <h2 className="h2-bold">Products</h2>
-          {searchText && (
+          {query && (
             <div>
-              Filtered by <i>&quot;{searchText}&quot;</i>{" "}
+              Filtered by <i>&quot;{query}&quot;</i>{" "}
               <Link href={`/admin/products`}>
                 <Button
                   variant="outline"
