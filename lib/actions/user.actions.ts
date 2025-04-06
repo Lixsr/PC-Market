@@ -12,6 +12,7 @@ import { formatError } from "../utils";
 import { ShippingAddress } from "@/types";
 import { auth } from "@/auth";
 import { PAGE_SIZE } from "../constants";
+import { revalidatePath } from "next/cache";
 
 // Get User
 export async function getUser(userId: string) {
@@ -100,6 +101,21 @@ export async function getAllUsers({
     users,
     totalPages,
   };
+}
+
+// Delete user
+export async function deleteUser(id: string) {
+  try {
+    await prisma.user.delete({ where: { id } });
+
+    revalidatePath("/admin/users");
+    return {
+      success: true,
+      message: "User deleted successfully",
+    };
+  } catch (error) {
+    return { success: false, message: formatError(error) };
+  }
 }
 
 // Sign in

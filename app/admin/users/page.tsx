@@ -1,7 +1,6 @@
 import { Metadata } from "next";
-import { getAllUsers } from "@/lib/actions/user.actions";
+import { getAllUsers, deleteUser } from "@/lib/actions/user.actions";
 import { requireAdmin } from "@/lib/auth-guard";
-import { auth } from "@/auth";
 import { formatId } from "@/lib/utils";
 
 import {
@@ -12,8 +11,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import Pagination from "@/components/shared/pagination";
-import DeleteDialog from "@/components/shared/delete-dialog";
+import Pagination from "@/components/shared/Pagination";
+import DeleteDialog from "@/components/shared/DeleteDialog";
 import { Button } from "@/components/ui/button";
 
 import Link from "next/link";
@@ -55,11 +54,18 @@ const UsersOverviewPage = async (props: {
                   <TableCell>{formatId(user.id)}</TableCell>
                   <TableCell>{user.name}</TableCell>
                   <TableCell>{user.email}</TableCell>
-                  <TableCell>{user.role === "admin" ? (<Badge variant='default'>Admin</Badge>) : (<Badge variant='outline'>User</Badge>)}</TableCell>
+                  <TableCell>
+                    {user.role === "admin" ? (
+                      <Badge variant="default">Admin</Badge>
+                    ) : (
+                      <Badge variant="outline">User</Badge>
+                    )}
+                  </TableCell>
                   <TableCell className="flex gap-1">
                     <Button asChild variant="outline" size="sm">
                       <Link href={`/admin/users/${user.id}`}>Edit</Link>
                     </Button>
+                    <DeleteDialog id={user.id} action={deleteUser} />
                   </TableCell>
                 </TableRow>
               ))}
