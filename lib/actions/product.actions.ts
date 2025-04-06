@@ -27,7 +27,6 @@ export const getProductById = async (id: string) => {
   });
   if (!product) throw new Error("Product not found");
   return toPlainObject(product);
-
 };
 
 // Get All Products
@@ -42,8 +41,9 @@ export async function getAllProducts({
   page: number;
   category?: string;
 }) {
-  console.log(query, category);
+  console.log(category);
   const products = await prisma.product.findMany({
+    where: { name: { contains: query, mode: "insensitive" } },
     orderBy: { createdAt: "desc" },
     skip: (page - 1) * limit,
     take: limit,
@@ -86,7 +86,7 @@ export const createProduct = async (
     return { success: true, message: "Product created successfully", product };
   } catch (e) {
     return { success: false, message: formatError(e) };
-  } 
+  }
 };
 // Update Product
 export const updateProduct = async (
@@ -108,5 +108,5 @@ export const updateProduct = async (
     return { success: true, message: "Product updated successfully", product };
   } catch (e) {
     return { success: false, message: formatError(e) };
-  } 
-}; 
+  }
+};
