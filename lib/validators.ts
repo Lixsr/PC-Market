@@ -55,9 +55,7 @@ export const insertProductSchema = z.object({
     .min(2, "description must be at lease 3 characters")
     .max(250, "description must be at most 250 characters")
     .nullable(),
-  images: z
-    .array(z.string())
-    .min(1, "Please upload at least one image"),
+  images: z.array(z.string()).min(1, "Please upload at least one image"),
   isFeatured: z.boolean(),
   // nullable is used to allow null values
   banner: z.string().nullable(),
@@ -69,6 +67,12 @@ export const updateProductSchema = insertProductSchema.extend({
   id: z.string().min(1, "Product id is required"),
 });
 
+// Update User schema
+export const updateUserSchema = z.object({
+  id: z.string().min(1, "User id is required"),
+  name: z.string().min(3, "Name must be at least 3 characters"),
+  role: z.string().min(1, "Role is required"),
+});
 // Define a cartItem schema
 export const cartItemSchema = z.object({
   productId: z.string().min(1, "Product is required"),
