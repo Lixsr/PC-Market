@@ -67,12 +67,7 @@ export const updateProductSchema = insertProductSchema.extend({
   id: z.string().min(1, "Product id is required"),
 });
 
-// Update User schema
-export const updateUserSchema = z.object({
-  id: z.string().min(1, "User id is required"),
-  name: z.string().min(3, "Name must be at least 3 characters"),
-  role: z.string().min(1, "Role is required"),
-});
+
 // Define a cartItem schema
 export const cartItemSchema = z.object({
   productId: z.string().min(1, "Product is required"),
@@ -149,4 +144,9 @@ export const updateProfileSchema = z.object({
     .string()
     .email("Invalid email address")
     .min(2, "Email must be at least 2 characters"),
+});
+// Update User schema
+export const updateUserSchema = updateProfileSchema.extend({
+  id: z.string().min(1, "User id is required"),
+  role: z.string().min(1, "Role is required"),
 });

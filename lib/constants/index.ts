@@ -40,13 +40,9 @@ export const defaultShippingAddress = {
   postalCode: "",
   country: "",
 };
-export const defaultUpdateUser = {
-  name: "",
-  email: "",
-  password: "",
-  role: "user",
-};
-export const USER_ROLES = process.env.USER_ROLES ? process.env.USER_ROLES : ["user", "admin"];
+export const USER_ROLES = process.env.USER_ROLES
+  ? process.env.USER_ROLES.split(", ")
+  : ["user", "admin"];
 
 export const PAYMENT_METHODS = process.env.PAYMENT_METHODS
   ? process.env.PAYMENT_METHODS.split(", ")
