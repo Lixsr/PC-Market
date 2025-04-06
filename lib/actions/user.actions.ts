@@ -11,6 +11,7 @@ import { prisma } from "@/db/prisma";
 import { formatError } from "../utils";
 import { ShippingAddress } from "@/types";
 import { auth } from "@/auth";
+import { PAGE_SIZE } from "../constants";
 
 // Get User
 export async function getUser(userId: string) {
@@ -76,6 +77,29 @@ export async function updateUserProfile({
   } catch (error) {
     return { success: false, message: formatError(error) };
   }
+}
+
+// Get all users
+export async function getAllUsers({
+  limit = PAGE_SIZE,
+  page,
+}: {
+  limit?: number;
+  page: number;
+}) {
+  const users = await prisma.user.findMany({
+    orderBy: { createdAt: "desc" },
+    take: limit,
+    skip: (page - 1) * limit,
+  });
+
+  const totalUsers = await prisma.user.count();
+  const totalPages = Math.ceil(totalUsers / limit);
+
+  return {
+    users,
+    totalPages,
+  };
 }
 
 // Sign in
