@@ -10,6 +10,7 @@ import { hashSync } from "bcrypt-ts-edge";
 import { prisma } from "@/db/prisma";
 import { formatError } from "../utils";
 import { ShippingAddress } from "@/types";
+import { UpdateUserSchema } from "@/types";
 import { auth } from "@/auth";
 import { PAGE_SIZE } from "../constants";
 import { revalidatePath } from "next/cache";
@@ -112,6 +113,25 @@ export async function deleteUser(id: string) {
     return {
       success: true,
       message: "User deleted successfully",
+    };
+  } catch (error) {
+    return { success: false, message: formatError(error) };
+  }
+}
+// Update a user
+export async function updateUser(user: UpdateUserSchema) {
+  try {
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        name: user.name,
+        role: user.role,
+      },
+    });
+    revalidatePath("/admin/users");
+    return {
+      success: true,
+      message: "User updated successfully",
     };
   } catch (error) {
     return { success: false, message: formatError(error) };
