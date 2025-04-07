@@ -115,8 +115,7 @@ export const updateProduct = async (
 export const getCategories = async () => {
   const categories = await prisma.product.groupBy({
     by: ["category"],
-    _count: { category: true },
-    
+    _count: true,
   });
-  return toPlainObject(categories);
+  return categories;
 };
