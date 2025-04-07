@@ -5,6 +5,7 @@ import { LATEST_PRODUCTS_LIMIT, PAGE_SIZE } from "../constants";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { insertProductSchema, updateProductSchema } from "../validators";
+import { Prisma } from "@prisma/client";
 
 // Get Latest Products
 export const getLatestProducts = async () => {
@@ -35,15 +36,47 @@ export async function getAllProducts({
   limit = PAGE_SIZE,
   page,
   category,
+  price,
+  rating,
+  sort,
 }: {
   query: string;
   limit?: number;
   page: number;
   category?: string;
+  price?: string;
+  rating?: string;
+  sort?: string;
 }) {
-  console.log(category);
+  // Filters
+  const queryFilter: Prisma.ProductWhereInput = query
+    ? {
+        name: {
+          contains: query,
+          mode: "insensitive",
+        },
+      }
+    : {};
+  const categoryFilter = category && category !== "all" ? { category } : {};
+  const priceFilter: Prisma.ProductWhereInput =
+    price && price !== "all"
+      ? {
+          price: {
+            gte: Number(price.split("-")[0]),
+            lte: Number(price.split("-")[1]),
+          },
+        }
+      : {};
+  const ratingFilter =
+    rating && rating !== "all" ? { rating: { gte: Number(rating) } } : {};
+
   const products = await prisma.product.findMany({
-    where: { name: { contains: query, mode: "insensitive" } },
+    where: {
+      ...queryFilter,
+      ...categoryFilter,
+      ...priceFilter,
+      ...ratingFilter,
+    },
     orderBy: { createdAt: "desc" },
     skip: (page - 1) * limit,
     take: limit,
@@ -115,7 +148,7 @@ export const updateProduct = async (
 export async function getFeaturedProducts() {
   const featuredProducts = await prisma.product.findMany({
     where: { isFeatured: true },
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
     take: 3,
   });
   return toPlainObject(featuredProducts);
