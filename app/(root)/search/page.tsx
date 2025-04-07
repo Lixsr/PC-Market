@@ -1,14 +1,45 @@
 import Pagination from "@/components/shared/Pagination";
 import ProductCard from "@/components/shared/products/ProductCard";
 import { getAllProducts, getCategories } from "@/lib/actions/product.actions";
-import { Metadata } from "next";
 import Link from "next/link";
 import { PRICES, SORT_OPTIONS } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 
-export const metadata: Metadata = {
-  title: "Search",
-};
+export async function generateMetadata(props: {
+  searchParams: Promise<{
+    query: string;
+    category: string;
+    price: string;
+    rating: string;
+  }>;
+}) {
+  const {
+    query = "",
+    category = "all",
+    price = "all",
+    rating = "all",
+  } = await props.searchParams;
+
+  // Check if any filters are set
+  const isQuerySet = query.trim() !== "";
+  const isCategorySet =
+    category && category !== "all" && category.trim() !== "";
+  const isPriceSet = price && price !== "all" && price.trim() !== "";
+  const isRatingSet = rating && rating !== "all" && rating.trim() !== "";
+
+  if (isQuerySet || isCategorySet || isPriceSet || isRatingSet) {
+    return {
+      title: `Search ${isQuerySet ? query : ""}
+      ${isCategorySet ? `: Category ${category}` : ""}
+      ${isPriceSet ? `: Price ${price}` : ""}
+      ${isRatingSet ? `: Rating ${rating}` : ""}`,
+    };
+  } else {
+    return {
+      title: "Search",
+    };
+  }
+}
 
 const SearchPage = async (props: {
   searchParams: Promise<{
@@ -133,7 +164,9 @@ const SearchPage = async (props: {
               <li key={r}>
                 <Link
                   href={getFilterUrl({ r: `${r}` })}
-                  className={`${r.toString() === rating && "font-bold underline"}`}
+                  className={`${
+                    r.toString() === rating && "font-bold underline"
+                  }`}
                 >
                   {`${r} stars & up`}
                 </Link>
