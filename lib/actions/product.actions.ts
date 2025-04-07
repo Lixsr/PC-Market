@@ -116,7 +116,7 @@ export async function getFeaturedProducts() {
   const featuredProducts = await prisma.product.findMany({
     where: { isFeatured: true },
     orderBy: { createdAt: 'desc' },
-    take: 5,
+    take: 3,
   });
   return toPlainObject(featuredProducts);
 }
