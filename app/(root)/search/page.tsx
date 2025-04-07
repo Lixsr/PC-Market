@@ -3,8 +3,9 @@ import ProductCard from "@/components/shared/products/ProductCard";
 import { getAllProducts, getCategories } from "@/lib/actions/product.actions";
 import { Metadata } from "next";
 import Link from "next/link";
-import { PRICES } from "@/lib/constants";
+import { PRICES, SORT_OPTIONS } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
+
 export const metadata: Metadata = {
   title: "Search",
 };
@@ -24,7 +25,7 @@ const SearchPage = async (props: {
     category = "all",
     price = "all",
     rating = "all",
-    sort = "recent",
+    sort = "Latest",
     page = "1",
   } = await props.searchParams;
 
@@ -132,7 +133,7 @@ const SearchPage = async (props: {
               <li key={r}>
                 <Link
                   href={getFilterUrl({ r: `${r}` })}
-                  className={`${r.toString() === rating && "font-bold"}`}
+                  className={`${r.toString() === rating && "font-bold underline"}`}
                 >
                   {`${r} stars & up`}
                 </Link>
@@ -160,7 +161,18 @@ const SearchPage = async (props: {
               </Button>
             ) : null}
           </div>
-          <div>{/* ToDo: Sorting */}</div>
+          <div>
+            Sort by{" "}
+            {SORT_OPTIONS.map((option) => (
+              <Link
+                key={option}
+                className={`mx-2   ${sort == option && "font-bold underline"} `}
+                href={getFilterUrl({ s: option })}
+              >
+                {option}
+              </Link>
+            ))}
+          </div>
         </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {products?.length === 0 && <div>No product found</div>}

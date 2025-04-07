@@ -74,3 +74,4 @@ export const PRICES = [
     value: "1001-10000",
   },
 ];
+export const SORT_OPTIONS = ["Latest", "Lowest", "Highest", "Rating"];

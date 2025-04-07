@@ -78,11 +78,11 @@ export async function getAllProducts({
       ...ratingFilter,
     },
     orderBy:
-      sort === "lowest"
+      sort === "Lowest"
         ? { price: "asc" }
-        : sort === "highest"
+        : sort === "Highest"
         ? { price: "desc" }
-        : sort === "rating"
+        : sort === "Rating"
         ? { rating: "desc" }
         : { createdAt: "desc" },
     skip: (page - 1) * limit,
