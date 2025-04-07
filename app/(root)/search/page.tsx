@@ -58,10 +58,11 @@ const SearchPage = async (props: {
   });
 
   const categories = await getCategories();
+  const ratings = [4, 3, 2, 1];
   return (
     <div className="grid md:grid-cols-5 md:gap-5">
       {/* Filter Links */}
-      <div className="filter-links">
+      <div className="filter-links text-center md:text-left mb-16">
         {/* Category Links */}
         <div className="text-xl mt-3 mb-2">Category</div>
         <div>
@@ -109,6 +110,30 @@ const SearchPage = async (props: {
                   className={`${p.value === price && "font-bold underline"}`}
                 >
                   {p.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+        {/* Rating Links */}
+        <div>
+          <div className="text-xl mt-8 mb-2">Reviews</div>
+          <ul className="space-y-1">
+            <li>
+              <Link
+                href={getFilterUrl({ r: "all" })}
+                className={`  ${"all" === rating && "font-bold"}`}
+              >
+                Any
+              </Link>
+            </li>
+            {ratings.map((r) => (
+              <li key={r}>
+                <Link
+                  href={getFilterUrl({ r: `${r}` })}
+                  className={`${r.toString() === rating && "font-bold"}`}
+                >
+                  {`${r} stars & up`}
                 </Link>
               </li>
             ))}
