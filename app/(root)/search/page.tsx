@@ -4,6 +4,7 @@ import { getAllProducts, getCategories } from "@/lib/actions/product.actions";
 import { Metadata } from "next";
 import Link from "next/link";
 import { PRICES } from "@/lib/constants";
+import { Button } from "@/components/ui/button";
 export const metadata: Metadata = {
   title: "Search",
 };
@@ -141,6 +142,26 @@ const SearchPage = async (props: {
         </div>
       </div>
       <div className="md:col-span-4 space-y-4">
+        <div className="flex-between flex-col md:flex-row my-4">
+          <div className="flex items-center">
+            {query !== "" && "Query: " + query}
+            {category !== "all" &&
+              category !== "" &&
+              "  | Category: " + category}
+            {price !== "all" && "   | Price: " + price}
+            {rating !== "all" && "   | Rating: " + rating + " stars & up"}
+            &nbsp;
+            {query !== "" ||
+            (category !== "all" && category !== "") ||
+            rating !== "all" ||
+            price !== "all" ? (
+              <Button variant={"link"} asChild>
+                <Link href="/search">Clear</Link>
+              </Button>
+            ) : null}
+          </div>
+          <div>{/* ToDo: Sorting */}</div>
+        </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {products?.length === 0 && <div>No product found</div>}
           {products?.map((product) => (
