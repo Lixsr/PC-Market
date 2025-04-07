@@ -111,6 +111,16 @@ export const updateProduct = async (
   }
 };
 
+// Get featured products
+export async function getFeaturedProducts() {
+  const featuredProducts = await prisma.product.findMany({
+    where: { isFeatured: true },
+    orderBy: { createdAt: 'desc' },
+    take: 5,
+  });
+  return toPlainObject(featuredProducts);
+}
+
 // Get Categories
 export const getCategories = async () => {
   const categories = await prisma.product.groupBy({
