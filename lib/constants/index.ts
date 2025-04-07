@@ -51,3 +51,26 @@ export const DEFAULT_PAYMENT_METHOD = process.env.DEFAULT_PAYMENT_METHOD
   ? process.env.DEFAULT_PAYMENT_METHOD
   : "PayPal";
 export const PAGE_SIZE = Number(process.env.PAGE_SIZE) || 10;
+
+export const PRICES = [
+  {
+    name: "$1 to $100",
+    value: "1-100",
+  },
+  {
+    name: "$101 to $200",
+    value: "101-200",
+  },
+  {
+    name: "$201 to $500",
+    value: "201-500",
+  },
+  {
+    name: "$501 to $1000",
+    value: "501-1000",
+  },
+  {
+    name: "More than $1000",
+    value: "1001-10000",
+  },
+];
