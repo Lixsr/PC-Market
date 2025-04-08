@@ -11,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import ReviewForm from "../ReviewForm";
 
 const ReviewList = ({
   userId,
@@ -26,7 +27,7 @@ const ReviewList = ({
     <div className="space-y-4">
       {reviews.length === 0 && <div>No Reviews</div>}
       {userId ? (
-        <>{/* ToDo: Review Form */}</>
+        <ReviewForm userId={userId} productId={productId} />
       ) : (
         <div>
           Please{" "}
