@@ -12,6 +12,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import ReviewForm from "../ReviewForm";
+import { getReviews } from "@/lib/actions/review.actions";
 
 const ReviewList = ({
   userId,

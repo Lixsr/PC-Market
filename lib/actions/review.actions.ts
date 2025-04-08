@@ -106,7 +106,7 @@ export async function getReviews({ productId }: { productId: string }) {
 }
 
 // Get a user review for a product
-export const getReviewByProductId = async ({
+export const getUserReview = async ({
   productId,
 }: {
   productId: string;
