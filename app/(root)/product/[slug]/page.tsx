@@ -3,12 +3,12 @@ import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import ProductPrice from "@/components/shared/products/ProductPrice";
-import { Star } from "lucide-react";
 import ProductImages from "@/components/shared/products/ProductImages";
 import AddToCart from "@/components/shared/products/QuantityControl";
 import { getCart } from "@/lib/actions/cart.actions";
 import { auth } from "@/auth";
 import ReviewList from "./ReviewList";
+import Rating from "@/components/shared/products/Rating";
 
 const ProductDetailsPage = async (props: {
   params: Promise<{ slug: string }>;
@@ -37,9 +37,11 @@ const ProductDetailsPage = async (props: {
               {product.brand} {product.category}
             </p>
             <h3 className="h3-bold">{product.name}</h3>
-            <p className="flex gap-1">
-              {product.rating} <Star /> of {product.numReviews} Reviews
-            </p>
+            {/* Rating Display */}
+            <div className="flex gap-3">
+              <Rating value={Number(product.rating)} />
+              <p>{product.numReviews} reviews</p>
+            </div>
             <div className="flex flex-col sm:flex-row sm:items-center gap-3">
               <ProductPrice
                 value={Number(product.price)}

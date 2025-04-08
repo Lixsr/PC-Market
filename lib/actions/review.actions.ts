@@ -86,7 +86,7 @@ export async function publishReview(data: z.infer<typeof insertReviewSchema>) {
 
 // Get the product's reviews
 export async function getReviews({ productId }: { productId: string }) {
-  const data = await prisma.review.findMany({
+  const reviews = await prisma.review.findMany({
     where: {
       productId: productId,
     },
@@ -102,7 +102,7 @@ export async function getReviews({ productId }: { productId: string }) {
     },
   });
 
-  return { data };
+  return { reviews };
 }
 
 // Get a user review for a product

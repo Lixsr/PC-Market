@@ -1,9 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Star } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import ProductPrice from "./ProductPrice";
 import { Product } from "@/types";
+import Rating from "./Rating";
 
 const ProductCard = ({ product }: { product: Product }) => {
   return (
@@ -29,9 +29,9 @@ const ProductCard = ({ product }: { product: Product }) => {
           <h2 className="font-medium text-sm">{product.name}</h2>
         </Link>
         <div className="flex-between gap-4">
-          <p className="flex gap-2">
-            {product.rating} <Star />
-          </p>
+          <div className="flex gap-2">
+            <Rating value={Number(product.rating)} />
+          </div>
           {product.stock > 0 ? (
             <ProductPrice value={Number(product.price)} />
           ) : (
