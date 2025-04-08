@@ -33,7 +33,7 @@ import { insertReviewSchema } from "@/lib/validators";
 import { z } from "zod";
 import { Loader, StarIcon } from "lucide-react";
 import { toast } from "sonner";
-import { publishReview } from "@/lib/actions/review.actions";
+import { publishReview, getUserReview } from "@/lib/actions/review.actions";
 const ReviewForm = ({
   userId,
   productId,
@@ -49,12 +49,18 @@ const ReviewForm = ({
     defaultValues: defaultReview,
   });
   // open form handler
-  const openForm = () => {
+  const openForm = async () => {
     form.setValue("userId", userId);
     form.setValue("productId", productId);
+    const currentUserReview = await getUserReview({ productId });
+    if (currentUserReview) {
+      form.setValue("title", currentUserReview.title);
+      form.setValue("description", currentUserReview.description);
+      form.setValue("rating", currentUserReview.rating);
+    }
+
     setOpen(true);
   };
-
   // handle form submission
   const handleSubmit: SubmitHandler<
     z.infer<typeof insertReviewSchema>

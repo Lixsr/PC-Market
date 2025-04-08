@@ -33,8 +33,9 @@ const ReviewList = ({
     };
     loadReviews();
   }, [productId]);
-  const reload = () => {
-    return;
+  const reload = async () => {
+    const { reviews } = await getReviews({ productId });
+    setReviews([...reviews]);
   };
   return (
     <div className="space-y-4">
