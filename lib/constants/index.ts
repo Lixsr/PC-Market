@@ -51,6 +51,11 @@ export const DEFAULT_PAYMENT_METHOD = process.env.DEFAULT_PAYMENT_METHOD
   ? process.env.DEFAULT_PAYMENT_METHOD
   : "PayPal";
 export const PAGE_SIZE = Number(process.env.PAGE_SIZE) || 10;
+export const defaultReview = {
+  title: "",
+  description: "",
+  rating: 0,
+};
 
 export const PRICES = [
   {
