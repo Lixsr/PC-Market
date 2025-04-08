@@ -33,6 +33,7 @@ import { insertReviewSchema } from "@/lib/validators";
 import { z } from "zod";
 import { Loader, StarIcon } from "lucide-react";
 import { toast } from "sonner";
+import { publishReview } from "@/lib/actions/review.actions";
 const ReviewForm = ({
   userId,
   productId,
@@ -40,22 +41,44 @@ const ReviewForm = ({
 }: {
   userId: string;
   productId: string;
-  onReviewSubmitted?: () => void;
+  onReviewSubmitted: () => void;
 }) => {
   const [open, setOpen] = useState(false);
   const form = useForm<z.infer<typeof insertReviewSchema>>({
     resolver: zodResolver(insertReviewSchema),
     defaultValues: defaultReview,
   });
+  // open form handler
   const openForm = () => {
+    form.setValue("userId", userId);
+    form.setValue("productId", productId);
     setOpen(true);
+  };
+
+  // handle form submission
+  const handleSubmit: SubmitHandler<
+    z.infer<typeof insertReviewSchema>
+  > = async (data) => {
+    const response = await publishReview({
+      ...data,
+      productId,
+    });
+    if (!response.success) {
+      toast.error(response.message, { richColors: true });
+      return;
+    }
+    setOpen(false);
+    onReviewSubmitted();
+    toast.success("Review published successfully", {
+      richColors: true,
+    });
   };
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <Button onClick={openForm}>Write a Review</Button>
       <DialogContent className="sm:max-w-[480px]">
         <Form {...form}>
-          <form method="post">
+          <form method="POST" onSubmit={form.handleSubmit(handleSubmit)}>
             <DialogHeader>
               <DialogTitle>Write a review</DialogTitle>
               <DialogDescription>
