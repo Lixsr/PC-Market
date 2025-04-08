@@ -39,5 +39,6 @@ export type UpdateUserSchema = z.infer<typeof updateUserSchema>;
 export type Review = z.infer<typeof insertReviewSchema> & {
   id: string;
   createdAt: Date;
+  numReviews: number;
   user?: { name: string };
 };
