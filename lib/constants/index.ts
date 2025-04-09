@@ -80,3 +80,6 @@ export const PRICES = [
   },
 ];
 export const SORT_OPTIONS = ["Latest", "Lowest", "Highest", "Rating"];
+
+export const RESEND_SENDER_EMAIL =
+  process.env.RESEND_SENDER_EMAIL || "onboarding@resend.dev";
