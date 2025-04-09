@@ -8,10 +8,11 @@ import { getUser } from "./user.actions";
 import { insertOrderSchema } from "../validators";
 import { prisma } from "@/db/prisma";
 import { Prisma } from "@prisma/client";
-import { CartItem, PaymentResult } from "@/types";
+import { CartItem, PaymentResult, ShippingAddress } from "@/types";
 import { paypal } from "../paypal";
 import { revalidatePath } from "next/cache";
 import { PAGE_SIZE } from "../constants";
+import { sendPurchaseReceipt } from "@/email/index";
 
 export async function placeOrder() {
   try {
@@ -182,7 +183,27 @@ export async function approvePaypalOrder(
         },
       });
     });
+    const updatedOrder = await prisma.order.findFirst({
+      where: { id: orderId },
+      include: {
+        orderItems: true,
+        user: { select: { name: true, email: true } },
+      },
+    });
+    if (!updatedOrder) throw new Error("Order not found");
+    sendPurchaseReceipt({
+      order: {
+        ...updatedOrder,
+        shippingAddress: updatedOrder.shippingAddress as ShippingAddress,
+        paymentResult: updatedOrder.paymentResult as PaymentResult,
+        itemsPrice: updatedOrder.itemsPrice.toString(),
+        shippingPrice: updatedOrder.shippingPrice.toString(),
+        taxPrice: updatedOrder.taxPrice.toString(),
+        totalPrice: updatedOrder.totalPrice.toString(),
+      },
+    });
     revalidatePath(`/order/${orderId}`);
+
     return {
       success: true,
       message: "Payment processed successfully. Your order is confirmed.",
