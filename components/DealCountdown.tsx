@@ -19,7 +19,13 @@ const calculateTimeRemaining = (targetDate: Date) => {
   };
 };
 
-const DealCountdown = ({ dealEndingTime, promoImageUrl }: { dealEndingTime: Date, promoImageUrl: string }) => {
+const DealCountdown = ({
+  dealEndingTime,
+  promoImageUrl,
+}: {
+  dealEndingTime: Date;
+  promoImageUrl: string;
+}) => {
   const [time, setTime] = useState<ReturnType<typeof calculateTimeRemaining>>();
 
   useEffect(() => {
@@ -76,12 +82,7 @@ const DealCountdown = ({ dealEndingTime, promoImageUrl }: { dealEndingTime: Date
           </div>
         </div>
         <div className="flex justify-center">
-          <Image
-            src={promoImageUrl}
-            alt="promotion"
-            width={300}
-            height={200}
-          />
+          <Image src={promoImageUrl} alt="promotion" width={300} height={200} />
         </div>
       </section>
     );
@@ -94,7 +95,8 @@ const DealCountdown = ({ dealEndingTime, promoImageUrl }: { dealEndingTime: Date
         <p>
           Discover unbeatable savings with our Deal of the Month! Enjoy
           exclusive perks and special offers on every purchase. Make this month
-          unforgettable with incredible deals tailored just for you. Don’t wait—shop now and save big! 🎁🛒
+          unforgettable with incredible deals tailored just for you. Don&apos;t
+          wait—shop now and save big! 🎁🛒
         </p>
         <ul className="grid grid-cols-4">
           <RemainingTimeBox label="Days" value={time.days} />
@@ -109,12 +111,7 @@ const DealCountdown = ({ dealEndingTime, promoImageUrl }: { dealEndingTime: Date
         </div>
       </div>
       <div className="flex justify-center">
-        <Image
-          src={promoImageUrl}
-          alt="promotion"
-          width={300}
-          height={200}
-        />
+        <Image src={promoImageUrl} alt="promotion" width={300} height={200} />
       </div>
     </section>
   );
