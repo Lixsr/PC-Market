@@ -12,7 +12,22 @@ import {
 import { auth } from "@/auth";
 
 const UserButton = async () => {
-  const session = await auth();
+  let session = null;
+  try {
+    session = await auth();
+  } catch (error) {
+    console.error("Auth error in UserButton:", error);
+    // Return sign-in button if auth fails
+    return (
+      <Button asChild>
+        <Link href="/sign-in">
+          <UserIcon />
+          Sign In
+        </Link>
+      </Button>
+    );
+  }
+
   if (!session) {
     return (
       <Button asChild>

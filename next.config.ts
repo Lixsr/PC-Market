@@ -10,6 +10,9 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  experimental: {
+    serverComponentsExternalPackages: ["@neondatabase/serverless"],
+  },
   /* config options here */
   // in case of any issues
   // typescript: {
