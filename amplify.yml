@@ -1,0 +1,37 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm install --legacy-peer-deps
+        - npx prisma generate
+    build:
+      commands:
+        - echo "APP_DESCRIPTION=$APP_DESCRIPTION" >> .env.local
+        - echo "APP_NAME=$APP_NAME" >> .env.local
+        - echo "APP_URL=$APP_URL" >> .env.local
+        - echo "AUTH_TRUST_HOST=$AUTH_TRUST_HOST" >> .env.local
+        - echo "DATABASE_URL=$DATABASE_URL" >> .env.local
+        - echo "DEFAULT_PAYMENT_METHOD=$DEFAULT_PAYMENT_METHOD" >> .env.local
+        - echo "LATEST_PRODUCTS_LIMIT=$LATEST_PRODUCTS_LIMIT" >> .env.local
+        - echo "NEXTAUTH_SECRET=$NEXTAUTH_SECRET" >> .env.local
+        - echo "NEXTAUTH_URL=$NEXTAUTH_URL" >> .env.local
+        - echo "NEXTAUTH_URL_INTERNAL=$NEXTAUTH_URL_INTERNAL" >> .env.local
+        - echo "PAYMENT_METHODS=$PAYMENT_METHODS" >> .env.local
+        - echo "PAYPAL_API_URL=$PAYPAL_API_URL" >> .env.local
+        - echo "PAYPAL_APP_SECRET=$PAYPAL_APP_SECRET" >> .env.local
+        - echo "PAYPAL_CLIENT_ID=$PAYPAL_CLIENT_ID" >> .env.local
+        - echo "RESEND_API_KEY=$RESEND_API_KEY" >> .env.local
+        - echo "RESEND_SENDER_EMAIL=$RESEND_SENDER_EMAIL" >> .env.local
+        - echo "UPLOADTHING_ID=$UPLOADTHING_ID" >> .env.local
+        - echo "UPLOADTHING_SECRET=$UPLOADTHING_SECRET" >> .env.local
+        - echo "_LIVE_UPDATES=$_LIVE_UPDATES" >> .env.local
+        - npm run build
+  artifacts:
+    baseDirectory: .next
+    files:
+      - "**/*"
+  cache:
+    paths:
+      - .next/cache/**/*
+      - .npm/**/*
