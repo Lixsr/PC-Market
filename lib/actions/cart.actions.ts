@@ -32,10 +32,16 @@ function calculatePrice(items: CartItem[]) {
 }
 export const addToCart = async (item: CartItem) => {
   try {
-    const sessionCartId = (await cookies()).get("sessionCartId")?.value;
-    // handle missing sessionCartId
+    const cookieStore = await cookies();
+    let sessionCartId = cookieStore.get("sessionCartId")?.value;
+    // If missing, initialize a new sessionCartId cookie instead of throwing
     if (!sessionCartId) {
-      throw new Error("Session Cart Id not found");
+      sessionCartId = crypto.randomUUID();
+      cookieStore.set("sessionCartId", sessionCartId, {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+      });
     }
     // Get the user id from the session
     const session = await auth();
@@ -103,10 +109,18 @@ export const addToCart = async (item: CartItem) => {
   }
 };
 export async function getCart() {
-  const sessionCartId = (await cookies()).get("sessionCartId")?.value;
-  // handle missing sessionCartId
+  const cookieStore = await cookies();
+  let sessionCartId = cookieStore.get("sessionCartId")?.value;
+  // If missing, lazily create a new sessionCartId cookie and return undefined cart for first-time visitors
   if (!sessionCartId) {
-    throw new Error("Session Cart Id not found");
+    sessionCartId = crypto.randomUUID();
+    cookieStore.set("sessionCartId", sessionCartId, {
+      httpOnly: true,
+      sameSite: "lax",
+      path: "/",
+    });
+    // No cart yet for a fresh session
+    return undefined;
   }
   // Get the user id from the session
   const session = await auth();
@@ -127,10 +141,16 @@ export async function getCart() {
 }
 export const removeFromCart = async (productId: string) => {
   try {
-    const sessionCartId = (await cookies()).get("sessionCartId")?.value;
-    // handle missing sessionCartId
+    const cookieStore = await cookies();
+    let sessionCartId = cookieStore.get("sessionCartId")?.value;
+    // If missing, initialize a new sessionCartId cookie instead of throwing
     if (!sessionCartId) {
-      throw new Error("Session Cart Id not found");
+      sessionCartId = crypto.randomUUID();
+      cookieStore.set("sessionCartId", sessionCartId, {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+      });
     }
     const product = await prisma.product.findFirst({
       where: { id: productId },
