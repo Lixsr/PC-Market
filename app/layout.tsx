@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     default: `${APP_NAME}`,
   },
   description: `${APP_DESCRIPTION}`,
-  metadataBase: new URL(APP_URL),
+  metadataBase: new URL(APP_URL || "http://localhost:3000"),
 };
 
 export default function RootLayout({

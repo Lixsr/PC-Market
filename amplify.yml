@@ -7,10 +7,11 @@ frontend:
         - npx prisma generate
     build:
       commands:
+        - echo "NODE_ENV=production" > .env.local
         - echo "APP_DESCRIPTION=$APP_DESCRIPTION" >> .env.local
         - echo "APP_NAME=$APP_NAME" >> .env.local
         - echo "APP_URL=$APP_URL" >> .env.local
-        - echo "AUTH_TRUST_HOST=$AUTH_TRUST_HOST" >> .env.local
+        - echo "AUTH_TRUST_HOST=true" >> .env.local
         - echo "DATABASE_URL=$DATABASE_URL" >> .env.local
         - echo "DEFAULT_PAYMENT_METHOD=$DEFAULT_PAYMENT_METHOD" >> .env.local
         - echo "LATEST_PRODUCTS_LIMIT=$LATEST_PRODUCTS_LIMIT" >> .env.local

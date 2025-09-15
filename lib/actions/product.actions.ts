@@ -9,11 +9,16 @@ import { Prisma } from "@prisma/client";
 
 // Get Latest Products
 export const getLatestProducts = async () => {
-  const products = await prisma.product.findMany({
-    take: LATEST_PRODUCTS_LIMIT,
-    orderBy: { createdAt: "desc" },
-  });
-  return toPlainObject(products);
+  try {
+    const products = await prisma.product.findMany({
+      take: LATEST_PRODUCTS_LIMIT,
+      orderBy: { createdAt: "desc" },
+    });
+    return toPlainObject(products);
+  } catch (error) {
+    console.error("Error fetching latest products:", error);
+    return [];
+  }
 };
 // Get Product
 export const getProduct = async (slug: string) => {
@@ -81,10 +86,10 @@ export async function getAllProducts({
       sort === "Lowest"
         ? { price: "asc" }
         : sort === "Highest"
-        ? { price: "desc" }
-        : sort === "Rating"
-        ? { rating: "desc" }
-        : { createdAt: "desc" },
+          ? { price: "desc" }
+          : sort === "Rating"
+            ? { rating: "desc" }
+            : { createdAt: "desc" },
     skip: (page - 1) * limit,
     take: limit,
   });
@@ -153,12 +158,17 @@ export const updateProduct = async (
 
 // Get featured products
 export async function getFeaturedProducts() {
-  const featuredProducts = await prisma.product.findMany({
-    where: { isFeatured: true },
-    orderBy: { createdAt: "desc" },
-    take: 3,
-  });
-  return toPlainObject(featuredProducts);
+  try {
+    const featuredProducts = await prisma.product.findMany({
+      where: { isFeatured: true },
+      orderBy: { createdAt: "desc" },
+      take: 3,
+    });
+    return toPlainObject(featuredProducts);
+  } catch (error) {
+    console.error("Error fetching featured products:", error);
+    return [];
+  }
 }
 
 // Get Categories

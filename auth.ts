@@ -15,7 +15,11 @@ export const config = {
     strategy: "jwt" as const,
     maxAge: 30 * 24 * 60 * 60,
   },
-  adapter: PrismaAdapter(prisma),
+  // Only use adapter in development or when DATABASE_URL is available
+  adapter:
+    process.env.NODE_ENV === "development" && process.env.DATABASE_URL
+      ? PrismaAdapter(prisma)
+      : undefined,
   providers: [
     CredentialsProvider({
       credentials: {
