@@ -26,7 +26,7 @@ export const getProductById = async (id: string) => {
   const product = await prisma.product.findFirst({
     where: { id },
   });
-  if (!product) throw new Error("Product not found");
+  if (!product) return { success: false, message: "Product not found" };
   return toPlainObject(product);
 };
 
@@ -81,10 +81,10 @@ export async function getAllProducts({
       sort === "Lowest"
         ? { price: "asc" }
         : sort === "Highest"
-        ? { price: "desc" }
-        : sort === "Rating"
-        ? { rating: "desc" }
-        : { createdAt: "desc" },
+          ? { price: "desc" }
+          : sort === "Rating"
+            ? { rating: "desc" }
+            : { createdAt: "desc" },
     skip: (page - 1) * limit,
     take: limit,
   });

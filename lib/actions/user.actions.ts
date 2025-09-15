@@ -21,10 +21,9 @@ export async function getUser(userId: string) {
     where: { id: userId },
   });
   if (!user) {
-    throw new Error("User not found");
+    return { success: false, message: "User not found" };
   }
-
-  return user;
+  return { success: true, user };
 }
 
 // Update Address
@@ -35,7 +34,7 @@ export async function updateAddress(newAddress: ShippingAddress) {
       where: { id: session?.user?.id },
     });
     if (!user) {
-      throw new Error("User not found");
+      return { success: false, message: "User not found" };
     }
     const address = shippingAddressSchema.parse(newAddress);
     await prisma.user.update({
@@ -64,10 +63,13 @@ export async function updateUserProfile({
       where: { id: session?.user?.id },
     });
     if (!user) {
-      throw new Error("User not found");
+      return { success: false, message: "User not found" };
     }
     if (user.email !== email) {
-      throw new Error("Email address updates are not allowed at the moment.");
+      return {
+        success: false,
+        message: "Email address updates are not allowed at the moment.",
+      };
     }
     await prisma.user.update({
       where: { id: user.id },

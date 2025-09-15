@@ -9,7 +9,8 @@ import { prisma } from "@/db/prisma";
 export async function publishReview(data: z.infer<typeof insertReviewSchema>) {
   try {
     const session = await auth();
-    if (!session) throw new Error("User is not authenticated");
+    if (!session)
+      return { success: false, message: "User is not authenticated" };
 
     // Validate and store review data and userId
     const review = insertReviewSchema.parse({
@@ -22,7 +23,7 @@ export async function publishReview(data: z.infer<typeof insertReviewSchema>) {
       where: { id: review.productId },
     });
 
-    if (!product) throw new Error("Product not found");
+    if (!product) return { success: false, message: "Product not found" };
 
     // Check if user has already reviewed this product
     const foundReview = await prisma.review.findFirst({
@@ -108,7 +109,7 @@ export async function getReviews({ productId }: { productId: string }) {
 // Get the user review for a product
 export const getUserReview = async ({ productId }: { productId: string }) => {
   const session = await auth();
-  if (!session) throw new Error("User is not authenticated");
+  if (!session) return { success: false, message: "User is not authenticated" };
 
   return await prisma.review.findFirst({
     where: { productId, userId: session?.user.id },
